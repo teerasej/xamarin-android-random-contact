@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -10,6 +10,9 @@ namespace RandomContact
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        ListView listView;
+        View loading;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -17,8 +20,8 @@ namespace RandomContact
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            var listView = FindViewById<ListView>(Resource.Id.listViewUser);
-            var loading = FindViewById<View>(Resource.Id.layoutLoading);
+            listView = FindViewById<ListView>(Resource.Id.listViewUser);
+            loading = FindViewById<View>(Resource.Id.layoutLoading);
 
             listView.Visibility = ViewStates.Gone;
             loading.Visibility = ViewStates.Visible;
