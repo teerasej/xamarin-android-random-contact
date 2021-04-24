@@ -18,7 +18,7 @@ namespace RandomContact
         public async Task<Result[]> GetUserProfiles()
         {
             var request = new RestRequest("", DataFormat.Json).AddParameter("results",50);
-            var response = this.Client.Get(request);
+            var response = await Client.ExecuteAsync(request);
             var userModel = UserModel.FromJson(response.Content);
             return userModel.Results;
         }
