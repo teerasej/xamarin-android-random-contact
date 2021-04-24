@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
+using RestSharp;
 
 namespace RandomContact
 {
@@ -14,7 +15,9 @@ namespace RandomContact
         ListView listView;
         View loading;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        UserService userService;
+
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -27,7 +30,7 @@ namespace RandomContact
             listView.Visibility = ViewStates.Gone;
             loading.Visibility = ViewStates.Visible;
 
-            LoadUserProfiles();
+            await LoadUserProfiles();
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -39,8 +42,15 @@ namespace RandomContact
 
         private async Task<bool> LoadUserProfiles()
         {
-            var service = new UserService();
-            var users = await service.GetUserProfiles();
+            userService = new UserService();
+            var users = await userService.GetUserProfiles();
+
+            listView.Adapter = new UserProfileListAdapter(this, users);
+            
+
+            listView.Visibility = ViewStates.Visible;
+            loading.Visibility = ViewStates.Gone;
+
             return true;
         }
         
